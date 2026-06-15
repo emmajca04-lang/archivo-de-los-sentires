@@ -57,8 +57,10 @@ const archiveApp = {
   },
 
   onScreenEnter(screen, handler) {
-    if (screen) {
-      this.screenEnterHandlers.set(screen, handler);
+    if (screen && handler) {
+      const handlers = this.screenEnterHandlers.get(screen) || [];
+      handlers.push(handler);
+      this.screenEnterHandlers.set(screen, handlers);
     }
   },
 
@@ -96,6 +98,11 @@ const archiveApp = {
     button.dataset.hoverBound = "true";
 
     button.addEventListener("mouseenter", () => {
+      if (button.classList.contains("is-hover-disabled")) {
+        image.src = image.dataset.defaultSrc;
+        return;
+      }
+
       image.src = image.dataset.hoverSrc;
     });
 
@@ -104,6 +111,11 @@ const archiveApp = {
     });
 
     button.addEventListener("focus", () => {
+      if (button.classList.contains("is-hover-disabled")) {
+        image.src = image.dataset.defaultSrc;
+        return;
+      }
+
       image.src = image.dataset.hoverSrc;
     });
 
@@ -156,11 +168,11 @@ const archiveApp = {
     this.updateTopUi(screenToShow);
     this.saveCurrentScreen(screenToShow);
 
-    const screenEnterHandler = this.screenEnterHandlers.get(screenToShow);
+    const screenEnterHandlers = this.screenEnterHandlers.get(screenToShow) || [];
 
-    if (screenEnterHandler) {
+    screenEnterHandlers.forEach((screenEnterHandler) => {
       screenEnterHandler();
-    }
+    });
   },
 
   showLoadingFrame(frame) {
@@ -198,7 +210,13 @@ const archiveApp = {
 
   restoreCurrentScreen() {
     const savedScreenName = window.sessionStorage.getItem(this.storageKey);
-    const screenToRestore = this.getScreenByName(savedScreenName);
+    const shouldBlockFinalRestore =
+      savedScreenName === "final" &&
+      this.isFinalRoomUnlocked &&
+      !this.isFinalRoomUnlocked();
+    const screenToRestore = shouldBlockFinalRestore
+      ? this.screens.hub
+      : this.getScreenByName(savedScreenName);
     this.showOnly(screenToRestore);
   },
 

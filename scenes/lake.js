@@ -161,7 +161,7 @@ El lago sabrá qué hacer con ellos.`;
     "assets/images/Lake/Frog_3.png",
     "assets/images/Lake/Frog_2.png",
   ];
-  const frogFrameDurations = [7000, 1000, 1000, 1000];
+  const frogFrameDurations = [7000, 500, 500, 500];
   let idleHintTimer = null;
   let typewriterTimer = null;
   let holdCaptionTimer = null;
