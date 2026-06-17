@@ -167,6 +167,7 @@ const archiveApp = {
     this.currentScreen = screenToShow;
     this.updateTopUi(screenToShow);
     this.saveCurrentScreen(screenToShow);
+    window.archiveAudio?.syncAmbientWithScreen();
 
     const screenEnterHandlers = this.screenEnterHandlers.get(screenToShow) || [];
 
@@ -234,6 +235,7 @@ const archiveApp = {
     Object.values(this.rooms).forEach((screen) => screen.classList.add("is-hidden"));
     this.screens.loading.classList.remove("is-hidden");
     this.updateTopUi(this.screens.loading);
+    window.archiveAudio?.stopAmbient();
 
     let frame = 0;
     this.showLoadingFrame(frame);
@@ -265,10 +267,12 @@ const archiveApp = {
       }
 
       if (this.currentScreen === this.screens.hub) {
+        window.archiveAudio?.playEffect("door");
         this.showWithLoading(this.screens.entry);
         return;
       }
 
+      window.archiveAudio?.playEffect("door");
       this.showWithLoading(this.screens.hub);
     });
   },
@@ -289,6 +293,7 @@ function setup() {
   setupFinalScene(archiveApp);
   setupEntryScene(archiveApp);
   setupHubScene(archiveApp);
+  setupArchiveAudio(archiveApp);
 
   // Canvas de p5 para las luciernagas del lago.
   const gameFrameSize = getGameFrameSize();

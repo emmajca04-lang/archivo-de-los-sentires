@@ -149,6 +149,7 @@ function setupHubScene(app) {
       }
 
       if (roomScreen) {
+        window.archiveAudio?.playEffect("door");
         hideHubCaption();
         app.showWithLoading(roomScreen);
       }

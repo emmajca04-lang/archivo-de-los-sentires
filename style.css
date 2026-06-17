@@ -112,6 +112,11 @@ body::before {
   outline-offset: 4px;
 }
 
+.ui-icon-button.is-muted .ui-button-icon {
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+
 .firefly-canvas {
   position: absolute;
   z-index: 6;
@@ -1094,10 +1099,10 @@ body.is-tv-minigame-open .billboard-caption {
 }
 
 .caption-next-button {
-  top: 13px;
-  right: 14px;
-  width: 12px;
-  height: 12px;
+  top: 4px;
+  right: 5px;
+  width: 34px;
+  height: 34px;
 }
 
 /* Botones de si/no del cafe. */
@@ -1192,8 +1197,10 @@ body.is-tv-minigame-open .billboard-caption {
 }
 
 .text-next-button {
-  top: 16px;
-  right: 18px;
+  top: 5px;
+  right: 7px;
+  width: 38px;
+  height: 38px;
 }
 
 @keyframes caption-bob {
